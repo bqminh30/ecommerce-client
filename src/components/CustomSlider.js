@@ -14,7 +14,7 @@ const settings = {
 
 const CustomSlider = ({products, active}) => {
   return (
-   <Slider {...settings}>
+   <Slider className='custom-slider' {...settings}>
           {products && products?.map(el => (
             <Product
             key={el._id} 

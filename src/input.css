@@ -4,16 +4,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-button.slick-next{
+.custom-slider button.slick-next{
     right: 80px;
     z-index: 10;
 }
-button.slick-prev{
+.custom-slider button.slick-prev{
     left: 20px;
     z-index: 10;
     }
 
-button.slick-next::before {
+.custom-slider button.slick-next::before {
     color: gray;
     content: '\276F';
     background-color: #ffd3d3;
@@ -25,7 +25,7 @@ button.slick-next::before {
     font-size: 30px;
 }
 
-button.slick-prev::before {
+.custom-slider button.slick-prev::before {
     color: gray;
     content: '\276E';
     background-color: #ffd3d3;
@@ -34,5 +34,40 @@ button.slick-prev::before {
     align-items: center;
     width: 80px;
     height: 80px;
+    font-size: 30px;
+}
+
+.image-slider button.slick-next{
+    right: 0px;
+    z-index: 10;
+    top: 55px;
+}
+.image-slider button.slick-prev{
+    left: 0px;
+    top: 55px;
+    z-index: 10;
+    }
+
+.image-slider button.slick-next::before {
+    color: gray;
+    content: '\276F';
+    background-color: #ffd3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+}
+
+.image-slider button.slick-prev::before {
+    color: gray;
+    content: '\276E';
+    background-color: #ffd3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
     font-size: 30px;
 }
