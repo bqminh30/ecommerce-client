@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import { apiGetProduct } from '../../apis'
-import { BreadCrumb } from '../../components'
+import { BreadCrumb, Button, SelectQuantity } from '../../components'
 import Slider from "react-slick";
 import ReactImageMagify from 'react-image-magnify'
 import { formatMoney, formatPrice, renderStarFormatNumber } from '../../ultils/helpers';
@@ -18,6 +18,7 @@ const settings = {
 const DetailProduct = () => {
     const {pid, title, category} = useParams()
     const [product, setProduct] = useState();
+    const [quantity, setQuantity] = useState(1);
   const resData = async (pid) => {
     const res = await apiGetProduct(pid)
     if(res.success) setProduct(res?.productData)
@@ -26,6 +27,20 @@ const DetailProduct = () => {
       if(pid) resData(pid)
   }, [pid])
 
+  const handleQuantity = useCallback((number)=> {
+    if(Number(number) || Number(number) <1){
+      return
+    }else {
+
+      setQuantity(number)
+    }
+  },[quantity])
+
+    const handleChangeQuantity = useCallback((flag)=> {
+      if(flag === 'minus' && quantity ===1) return;
+      if(flag === 'minus') setQuantity(prev => +prev -1)
+      if(flag === 'plus') setQuantity(prev => +prev +1)
+    },[quantity])
   return (
     <div className='w-full'>
       <div className='h-[81px] flex justify-center items-center bg-gray-100'>
@@ -56,7 +71,7 @@ const DetailProduct = () => {
                 {
                   product?.images.map(el => (
                     <div className='flex-1' key={el}>
-                      <img src={el} alt='sub-product' className=' h-[143px] w-[143px] object-cover'/>
+                      <img src={el} alt='sub-product' className=' h-[143px] object-cover'/>
                   
                     </div>
                     ))
@@ -64,20 +79,42 @@ const DetailProduct = () => {
               </Slider>
             </div>
           </div>
-          <div className='w-2/5'>
-            <h2 className='text-[30px] font-semibold'>
+          <div className='w-2/5 pr-[24px] flex flex-col gap-4'>
+           <div className='flex items-center justify-between'>
+           <h2 className='text-[30px] font-semibold'>
               {`${formatMoney(formatPrice(product?.price))} VND`}
             </h2>
-            <div className='flex items-center mt-4'>
+            <span className='text-sm text-main'>{`Kho: ${product?.quantity}`}</span>
+           </div>
+            <div className='flex items-center mt-2 gap-1'>
               {
-                renderStarFormatNumber(product.totalRatings)?.map(el => (
+                renderStarFormatNumber(product?.totalRatings)?.map(el => (
                   <span key={el}>{el}</span>
                 ))
               }
+              <span className='text-sm text-main italic'>{`Da ban: ${product?.sold} cai`}</span>
+          
+            </div>
+            <div className='list-square text-sm text-gray-500 pl-4'>
+              {
+                product?.description?.map(el =>(
+                  <li className='leading-6' key={el}>{el}</li>
+                ))
+              }
+              <div className='flex flex-col gap-8'>
+                <SelectQuantity quantity={quantity} 
+                handleChangeQuantity={handleChangeQuantity}
+                handleQuantity={handleQuantity}/>
+                <Button fw>
+                Add to Cart
+                </Button>
+              </div>
             </div>
           </div>
           <div className='w-1/5'></div>
       </div>
+
+      <div className='height-[500px]'></div>
 
     </div>
   )
