@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import { apiGetProduct } from '../../apis'
-import { BreadCrumb, Button, SelectQuantity } from '../../components'
+import { BreadCrumb, Button, ProductExtraInfo, ProductInfomation, SelectQuantity } from '../../components'
 import Slider from "react-slick";
 import ReactImageMagify from 'react-image-magnify'
 import { formatMoney, formatPrice, renderStarFormatNumber } from '../../ultils/helpers';
+import { productExtraInformation } from '../../ultils/contants';
 
 const settings = {
   dots: false,
@@ -18,10 +19,14 @@ const settings = {
 const DetailProduct = () => {
     const {pid, title, category} = useParams()
     const [product, setProduct] = useState();
+    const [currentImage, setCurrentImage] = useState(null);
     const [quantity, setQuantity] = useState(1);
   const resData = async (pid) => {
     const res = await apiGetProduct(pid)
-    if(res.success) setProduct(res?.productData)
+    if(res.success) {
+      setProduct(res?.productData)
+      setCurrentImage(res?.productData?.thumb)
+    }
   }
     useEffect(()=> {
       if(pid) resData(pid)
@@ -41,6 +46,11 @@ const DetailProduct = () => {
       if(flag === 'minus') setQuantity(prev => +prev -1)
       if(flag === 'plus') setQuantity(prev => +prev +1)
     },[quantity])
+
+    const handleClickImage = (e, el) => {
+      e.stopPropagation()
+      setCurrentImage(el)
+    }
   return (
     <div className='w-full'>
       <div className='h-[81px] flex justify-center items-center bg-gray-100'>
@@ -56,10 +66,10 @@ const DetailProduct = () => {
               smallImage: {
                 alt: "asdf",
                 isFluidWidth: true,
-                src: product?.thumb
+                src: currentImage
               },
               largeImage: {
-                src: product?.thumb,
+                src: currentImage,
                 width: 1200,
                 height: 1500
               }
@@ -70,8 +80,12 @@ const DetailProduct = () => {
               <Slider className="image-slider flex gap-2 justify-between" {...settings}>
                 {
                   product?.images.map(el => (
-                    <div className='flex-1' key={el}>
-                      <img src={el} alt='sub-product' className=' h-[143px] object-cover'/>
+                    <div
+
+                    className='flex-1' key={el}>
+                      <img
+                      onClick={e=> handleClickImage(e, el)}
+                      src={el} alt='sub-product' className='cursor-pointer border w-[143px] h-[143px] object-cover'/>
                   
                     </div>
                     ))
@@ -111,10 +125,26 @@ const DetailProduct = () => {
               </div>
             </div>
           </div>
-          <div className='w-1/5'></div>
+          <div className='w-1/5'>
+            {
+              productExtraInformation?.map(el=> (
+                <ProductExtraInfo
+                key={el.id}
+                icon={el.icon}
+                sub={el.sub}
+                title={el.title}
+                />
+              ))
+            }
+          </div>
+      </div>
+      <div className='w-main m-auto mt-8'>
+            <ProductInfomation 
+            totalRatings={product?.totalRatings }
+            totalCount={18}/>
       </div>
 
-      <div className='height-[500px]'></div>
+      <div className='height-[500px] w-main'></div>
 
     </div>
   )

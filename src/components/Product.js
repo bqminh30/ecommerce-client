@@ -11,7 +11,7 @@ const { BsFillSuitHeartFill,
   AiFillEye,
   AiOutlineMenu} = icons;
 
-const Product = ({productData, isNew, pid}) => {
+const Product = ({productData, isNew, pid, normal}) => {
   const [isShowOption, setIsShowOption] = useState(false)
   return (
     <div className='w-full text-base px-[10px]'>

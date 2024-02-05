@@ -12,7 +12,7 @@ const settings = {
 
 
 
-const CustomSlider = ({products, active}) => {
+const CustomSlider = ({products, active, normal}) => {
   return (
    <Slider className='custom-slider' {...settings}>
           {products && products?.map(el => (
@@ -21,6 +21,7 @@ const CustomSlider = ({products, active}) => {
             pid={el._id} 
             productData={el}
             isNew = {active}
+            normal={normal}
             />
           ))}
         </Slider>
