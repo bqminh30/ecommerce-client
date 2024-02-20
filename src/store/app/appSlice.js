@@ -5,9 +5,10 @@ export const appSlice = createSlice({
     name: 'app',
     initialState: {
         categories : null, 
-        isLoading: false
+        isLoading: false,
+        isShowModal: false,
+        modalChildren: null
     },
-    reducers: {},
     // Các action bình thường (sync action)
   reducers: {
     // Logout không gọi API mà chỉ đơn giản là cập nhật state
@@ -15,6 +16,11 @@ export const appSlice = createSlice({
       state.currentUser = null;
       state.errorMessage = '';
     },
+    showModal: (state, action) => {
+      state.isShowModal= action.payload.isShowModal;
+      state.modalChildren= action.payload.modalChildren;
+
+    }
   },
 
   // Code logic xử lý async action
@@ -42,5 +48,5 @@ export const appSlice = createSlice({
 })
 
 
-export const {} =appSlice.actions;
+export const {showModal} =appSlice.actions;
 export default appSlice.reducer;

@@ -155,7 +155,9 @@ const Login = () => {
                 name={"Submit"}
                 style="bg-blue-500"
                 handleOnClick={handleForgotPassword}
-              />
+              >
+                
+                </Button>
               <Button
                 name={"Back"}
                 handleOnClick={() => setIsForgotPassword(false)}
@@ -217,10 +219,12 @@ const Login = () => {
             setInvalidFields={setInvalidFields}
           />
           <Button
-            name={isRegister ? "Register" : "Login"}
+            
             handleOnClick={handleSubmit}
             fw={"w-full"}
-          />
+          >
+            {isRegister ? "Register" : "Login"}
+            </Button>
           <div className="flex items-center justify-between my-2 w-full text-sm">
             {!isRegister && (
               <span

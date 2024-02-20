@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useSearchParams, useNavigate ,createSearchParams} from "react-router-dom";
-import { BreadCrumb, InputSelect, Product, SearchItem } from "../../components";
+import { BreadCrumb, InputSelect, Panigation, Product, SearchItem } from "../../components";
 import { apiGetProducts } from "../../apis";
 import Masonry from "react-masonry-css";
 import { sorts } from "../../ultils/contants";
@@ -22,7 +22,7 @@ const Products = () => {
 
   const fetchProductByCategory = async (queris) => {
     const res = await apiGetProducts(queris);
-    if (res.success) setProducts(res.productDatas);
+    if (res.success) setProducts(res);
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const Products = () => {
           columnClassName="my-masonry-grid_column"
         >
           {/* array of JSX items */}
-          {products.map((el) => (
+          {products?.productDatas?.map((el) => (
             <Product
               key={el._id}
               pid={el._id}
@@ -129,6 +129,9 @@ const Products = () => {
             />
           ))}
         </Masonry>
+      </div>
+      <div className="w-main m-auto my-4 flex justify-end">
+            <Panigation  totalCount={products?.counts}/>
       </div>
       <div className="w-full h-[500px]"></div>
     </div>

@@ -21,6 +21,7 @@ const DetailProduct = () => {
     const [product, setProduct] = useState();
     const [currentImage, setCurrentImage] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [update, setUpdate] = useState(false);
   const resData = async (pid) => {
     const res = await apiGetProduct(pid)
     if(res.success) {
@@ -30,7 +31,11 @@ const DetailProduct = () => {
   }
     useEffect(()=> {
       if(pid) resData(pid)
-  }, [pid])
+  }, [pid,update])
+
+  const rerender = useCallback(() => {
+    setUpdate(!update)
+  },[update])
 
   const handleQuantity = useCallback((number)=> {
     if(Number(number) || Number(number) <1){
@@ -141,7 +146,10 @@ const DetailProduct = () => {
       <div className='w-main m-auto mt-8'>
             <ProductInfomation 
             totalRatings={product?.totalRatings }
-            totalCount={18}/>
+            nameProduct={product?.title}
+            ratings={product?.ratings}
+            pid={pid}
+            rerender={rerender}/>
       </div>
 
       <div className='height-[500px] w-main'></div>
